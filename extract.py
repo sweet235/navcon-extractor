@@ -59,6 +59,5 @@ def main():
             radius = 50
             twoway = int(int(start['spawnflags']) > 0)
             print(spos[0], spos[2], spos[1], epos[0], epos[2], epos[1], radius, 1, 63, twoway)
-            
 
 if __name__ == '__main__': main()
