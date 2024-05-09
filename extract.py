@@ -29,7 +29,7 @@ def read_navcon_ents():
                 continue
             if not tokens[1][len('pos_navcon'):] in ['_start', '_next']:
                 continue
-            type = tokens[1]
+            type = tokens[1][len('pos_navcon_'):]
             pos, target, spawnflags = False, False, False
             targetname = "no-target-{}".format(counter)
             playerclasses = []
