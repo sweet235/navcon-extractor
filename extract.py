@@ -25,10 +25,9 @@ def read_navcon_ents():
             prefix = 'pos_navcon_'
             if not (tokens[0] == 'classname' and tokens[1].startswith(prefix)):
                 continue
-            prefixlen = len(prefix)
-            if not tokens[1][prefixlen:] in ['start', 'next']:
+            kind = tokens[1][len(prefix):]
+            if not kind in ['start', 'next']:
                 continue
-            kind = tokens[1][prefixlen:]
             pos, target, spawnflags = False, False, False
             targetname = "no-target-{}".format(counter)
             radius = 50
