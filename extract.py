@@ -47,11 +47,23 @@ def read_navcon_ents():
     except Done: pass
     return navcons
 
+teams = dict(humans=['human'], aliens=['builder', 'level0', 'level1', 'level2', 'level3', 'level4'])
+
 def main():
     navcons = read_navcon_ents()
-    print("navcon 3")
+    classnavcons, allclassnames = dict(), set()
+    for teamname in teams:
+        for classname in teams[teamname]:
+            classnavcons[classname] = []
+            allclassnames.add(classname)
     for currentname in navcons:
         start = navcons[currentname]
+        classnames = set()
+        for classname in start['playerclasses']:
+            if not classname: continue
+            if classname in teams: classnames = classnames.union(teams[classname])
+            else: classnames.add(classname)
+        if not classnames: classnames = allclassnames
         if start['kind'] == 'start':
             current = start
             while 'target' in current:
@@ -63,9 +75,14 @@ def main():
                 epos = end['pos']
                 radius = start['radius']
                 twoway = int(start['spawnflags'] > 0)
-                print(spos[0], spos[2], spos[1], epos[0], epos[2], epos[1], radius, 1, 63, twoway)
+                line = '{} {} {} {} {} {} {} {} {} {}'.format(spos[0], spos[2], spos[1], epos[0], epos[2], epos[1], radius, 1, 63, twoway)
+                for classname in classnames: classnavcons[classname].append(line)
                 end['done'].append(targetname)
                 currentname = targetname
                 current = end
+    for requestedclassname in sys.argv[1:2]:
+        print("navcon 3")
+        if requestedclassname in classnavcons:
+            for line in classnavcons[requestedclassname]: print(line)
 
 if __name__ == '__main__': main()
