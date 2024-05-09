@@ -42,24 +42,31 @@ def read_navcon_ents():
                 elif tokens[0] == 'playerclasses': playerclasses = tokens[1:]
                 elif tokens[0] == 'spawnflags': spawnflags = tokens[1]
                 else: break
-            navcons[targetname] = dict(pos=pos, target=target, targetname=targetname, type=type, playerclasses=playerclasses, spawnflags=spawnflags)
+            navcons[targetname] = dict(pos=pos, target=target, targetname=targetname, type=type, playerclasses=playerclasses, spawnflags=spawnflags, done=[])
     except Done: pass
     return navcons
 
 def main():
     navcons = read_navcon_ents()
     print("navcon 3")
-    for key in navcons:
-        start = navcons[key]
-        try:
-            end = navcons[start['target']]
-        except KeyError:
-            end = False
-        if end:
-            spos = start['pos']
-            epos = end['pos']
-            radius = 50
-            twoway = int(int(start['spawnflags']) > 0)
-            print(spos[0], spos[2], spos[1], epos[0], epos[2], epos[1], radius, 1, 63, twoway)
+    for currentname in navcons:
+        start = navcons[currentname]
+        if start['type'] == 'start':
+            current = start
+            while 'target' in current:
+                targetname = current['target']
+                if not targetname in navcons:
+                    break
+                end = navcons[targetname]
+                if currentname in end['done']:
+                    break
+                spos = current['pos']
+                epos = end['pos']
+                radius = 50
+                twoway = int(int(start['spawnflags']) > 0)
+                print(spos[0], spos[2], spos[1], epos[0], epos[2], epos[1], radius, 1, 63, twoway)
+                end['done'].append(targetname)
+                currentname = targetname
+                current = end
 
 if __name__ == '__main__': main()
