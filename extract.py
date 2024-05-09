@@ -50,11 +50,11 @@ teams = dict(humans=['human_naked', 'human_bsuit'], aliens=['builder', 'builderu
 
 def main():
     navcons = read_navcon_ents()
-    classnavcons, allclassnames = dict(), set()
+    classnavcons, knownclassnames = {}, set()
     for teamname in teams:
         for classname in teams[teamname]:
             classnavcons[classname] = []
-            allclassnames.add(classname)
+    knownclassnames = classnavcons.keys()
     for currentname in navcons:
         start = navcons[currentname]
         classnames = set()
@@ -62,7 +62,8 @@ def main():
             if not classname: continue
             if classname in teams: classnames = classnames.union(teams[classname])
             else: classnames.add(classname)
-        if not classnames: classnames = allclassnames
+            if classname not in classnavcons: classnavcons[classname] = []
+        if not classnames: classnames = knownclassnames
         if start['kind'] == 'start':
             current = start
             while 'target' in current:
