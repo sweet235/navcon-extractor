@@ -31,7 +31,7 @@ def read_navcon_ents():
             prefixlen = len(prefix)
             if not tokens[1][prefixlen:] in ['start', 'next']:
                 continue
-            type = tokens[1][prefixlen:]
+            kind = tokens[1][prefixlen:]
             pos, target, spawnflags = False, False, False
             targetname = "no-target-{}".format(counter)
             playerclasses = []
@@ -44,7 +44,7 @@ def read_navcon_ents():
                 elif tokens[0] == 'playerclasses': playerclasses = tokens[1:]
                 elif tokens[0] == 'spawnflags': spawnflags = tokens[1]
                 else: break
-            navcons[targetname] = dict(pos=pos, target=target, targetname=targetname, type=type, playerclasses=playerclasses, spawnflags=spawnflags, done=[])
+            navcons[targetname] = dict(pos=pos, target=target, targetname=targetname, playerclasses=playerclasses, spawnflags=spawnflags, kind=kind, done=[])
     except Done: pass
     return navcons
 
@@ -53,7 +53,7 @@ def main():
     print("navcon 3")
     for currentname in navcons:
         start = navcons[currentname]
-        if start['type'] == 'start':
+        if start['kind'] == 'start':
             current = start
             while 'target' in current:
                 targetname = current['target']
