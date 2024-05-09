@@ -34,6 +34,7 @@ def read_navcon_ents():
             kind = tokens[1][prefixlen:]
             pos, target, spawnflags = False, False, False
             targetname = "no-target-{}".format(counter)
+            radius = 50
             playerclasses = []
             counter += 1
             while True:
@@ -41,10 +42,11 @@ def read_navcon_ents():
                 if tokens[0] == 'origin': pos = tokens[1:]
                 elif tokens[0] == 'target': target = tokens[1]
                 elif tokens[0] == 'targetname': targetname = tokens[1]
+                elif tokens[0] == 'size': radius = tokens[1]
                 elif tokens[0] == 'playerclasses': playerclasses = tokens[1:]
                 elif tokens[0] == 'spawnflags': spawnflags = tokens[1]
                 else: break
-            navcons[targetname] = dict(pos=pos, target=target, targetname=targetname, playerclasses=playerclasses, spawnflags=spawnflags, kind=kind, done=[])
+            navcons[targetname] = dict(pos=pos, target=target, targetname=targetname, radius=radius, playerclasses=playerclasses, spawnflags=spawnflags, kind=kind, done=[])
     except Done: pass
     return navcons
 
@@ -64,7 +66,7 @@ def main():
                     break
                 spos = current['pos']
                 epos = end['pos']
-                radius = 50
+                radius = int(start['radius'])
                 twoway = int(int(start['spawnflags']) > 0)
                 print(spos[0], spos[2], spos[1], epos[0], epos[2], epos[1], radius, 1, 63, twoway)
                 end['done'].append(targetname)
