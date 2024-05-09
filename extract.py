@@ -26,9 +26,8 @@ def read_navcon_ents():
             if not (tokens[0] == 'classname' and tokens[1].startswith(prefix)): continue
             kind = tokens[1][len(prefix):]
             if not kind in ['start', 'next']: continue
-            pos, target, radius, spawnflags = False, False, 50, 0
+            pos, target, radius, playerclasses, spawnflags = [], "", 50, set(), 0
             targetname = "no-target-{}".format(counter)
-            playerclasses = []
             counter += 1
             while True:
                 tokens = read_tokens()
@@ -71,12 +70,12 @@ def main():
                 if not targetname in navcons: break
                 end = navcons[targetname]
                 if currentname in end['done']: break
-                spos = current['pos']
-                epos = end['pos']
-                radius = start['radius']
-                twoway = int(start['spawnflags'] > 0)
-                line = '{} {} {} {} {} {} {} {} {} {}'.format(spos[0], spos[2], spos[1], epos[0], epos[2], epos[1], radius, 1, 63, twoway)
-                for classname in classnames: classnavcons[classname].append(line)
+                spos, epos = current['pos'], end['pos']
+                if spos and epos:
+                    radius = start['radius']
+                    twoway = int(start['spawnflags'] > 0)
+                    line = '{} {} {} {} {} {} {} {} {} {}'.format(spos[0], spos[2], spos[1], epos[0], epos[2], epos[1], radius, 1, 63, twoway)
+                    for classname in classnames: classnavcons[classname].append(line)
                 end['done'].append(targetname)
                 currentname = targetname
                 current = end
