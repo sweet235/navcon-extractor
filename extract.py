@@ -27,6 +27,8 @@ def read_navcon_ents():
             tokens = read_tokens()
             if not (tokens[0] == 'classname' and tokens[1].startswith('pos_navcon')):
                 continue
+            if not tokens[1][len('pos_navcon'):] in ['_start', '_next']:
+                continue
             type = tokens[1]
             pos, target, spawnflags = False, False, False
             targetname = "no-target-{}".format(counter)
