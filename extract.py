@@ -25,11 +25,13 @@ def read_navcon_ents():
             tokens = read_tokens()
             if tokens[0] != '{': continue
             tokens = read_tokens()
-            if not (tokens[0] == 'classname' and tokens[1].startswith('pos_navcon')):
+            prefix = 'pos_navcon_'
+            if not (tokens[0] == 'classname' and tokens[1].startswith(prefix)):
                 continue
-            if not tokens[1][len('pos_navcon'):] in ['_start', '_next']:
+            prefixlen = len(prefix)
+            if not tokens[1][prefixlen:] in ['start', 'next']:
                 continue
-            type = tokens[1][len('pos_navcon_'):]
+            type = tokens[1][prefixlen:]
             pos, target, spawnflags = False, False, False
             targetname = "no-target-{}".format(counter)
             playerclasses = []
