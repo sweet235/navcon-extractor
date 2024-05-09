@@ -2,10 +2,7 @@
 
 # run this command:
 #   cat chasm.map | python3 extract.py
-# TODO in .map:
-#   specify radius
-# TODO in this file:
-#   consider twoway information
+# TODO:
 #   output different files for different classes
 
 import sys
