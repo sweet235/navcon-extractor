@@ -23,15 +23,11 @@ def read_navcon_ents():
             if tokens[0] != '{': continue
             tokens = read_tokens()
             prefix = 'pos_navcon_'
-            if not (tokens[0] == 'classname' and tokens[1].startswith(prefix)):
-                continue
+            if not (tokens[0] == 'classname' and tokens[1].startswith(prefix)): continue
             kind = tokens[1][len(prefix):]
-            if not kind in ['start', 'next']:
-                continue
-            pos, target = False, False
-            spawnflags = 0
+            if not kind in ['start', 'next']: continue
+            pos, target, radius, spawnflags = False, False, 50, 0
             targetname = "no-target-{}".format(counter)
-            radius = 50
             playerclasses = []
             counter += 1
             while True:
@@ -40,13 +36,11 @@ def read_navcon_ents():
                 elif tokens[0] == 'target': target = tokens[1]
                 elif tokens[0] == 'targetname': targetname = tokens[1]
                 elif tokens[0] == 'size':
-                    try:
-                        radius = float(tokens[1])
+                    try: radius = float(tokens[1])
                     except ValueError: pass
                 elif tokens[0] == 'playerclasses': playerclasses = tokens[1:]
                 elif tokens[0] == 'spawnflags':
-                    try:
-                        spawnflags = int(tokens[1])
+                    try: spawnflags = int(tokens[1])
                     except ValueError: pass
                 else: break
             navcons[targetname] = dict(pos=pos, target=target, targetname=targetname, radius=radius, playerclasses=playerclasses, spawnflags=spawnflags, kind=kind, done=[])
@@ -62,11 +56,9 @@ def main():
             current = start
             while 'target' in current:
                 targetname = current['target']
-                if not targetname in navcons:
-                    break
+                if not targetname in navcons: break
                 end = navcons[targetname]
-                if currentname in end['done']:
-                    break
+                if currentname in end['done']: break
                 spos = current['pos']
                 epos = end['pos']
                 radius = start['radius']
