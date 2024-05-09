@@ -46,7 +46,7 @@ def read_navcon_ents():
     except Done: pass
     return navcons
 
-teams = dict(humans=['human'], aliens=['builder', 'level0', 'level1', 'level2', 'level3', 'level4'])
+teams = dict(humans=['human_naked', 'human_bsuit'], aliens=['builder', 'level0', 'level1', 'level2', 'level3', 'level4'])
 
 def main():
     navcons = read_navcon_ents()
