@@ -39,10 +39,10 @@ def read_navcon_ents():
                 if tokens[0] == 'origin': pos = tokens[1:]
                 elif tokens[0] == 'target': target = tokens[1]
                 elif tokens[0] == 'targetname': targetname = tokens[1]
-                elif tokens[0] == 'playerclasses': classes = tokens[1:]
+                elif tokens[0] == 'playerclasses': playerclasses = tokens[1:]
                 elif tokens[0] == 'spawnflags': spawnflags = tokens[1]
                 else: break
-            navcons[targetname] = dict(pos=pos, target=target, targetname=targetname, type=type, playerclasses=classes, spawnflags=spawnflags)
+            navcons[targetname] = dict(pos=pos, target=target, targetname=targetname, type=type, playerclasses=playerclasses, spawnflags=spawnflags)
     except Done: pass
     return navcons
 
