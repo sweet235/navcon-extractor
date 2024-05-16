@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # run this command:
-#   cat chasm.map | python3 extract.py
+#   cat chasm.map | ./extract.py level0
 # TODO:
 #   output different files for different classes
 
