@@ -26,7 +26,7 @@ def read_navcon_ents():
             if not (tokens[0] == 'classname' and tokens[1].startswith(prefix)): continue
             kind = tokens[1][len(prefix):]
             if not kind in ['start', 'next']: continue
-            pos, target, radius, playerclasses, spawnflags = [], "", 50, set(), 0
+            pos, target, radius, playerteams, playerclasses, spawnflags = [], "", 50, set(), set(), 0
             targetname = "no-target-{}".format(counter)
             counter += 1
             while True:
@@ -37,12 +37,13 @@ def read_navcon_ents():
                 elif tokens[0] == 'size':
                     try: radius = float(tokens[1])
                     except ValueError: pass
+                elif tokens[0] == 'playerteams': playerteams = tokens[1:]
                 elif tokens[0] == 'playerclasses': playerclasses = tokens[1:]
                 elif tokens[0] == 'spawnflags':
                     try: spawnflags = int(tokens[1])
                     except ValueError: pass
                 else: break
-            navcons[targetname] = dict(pos=pos, target=target, targetname=targetname, radius=radius, playerclasses=playerclasses, spawnflags=spawnflags, kind=kind, done=[])
+            navcons[targetname] = dict(pos=pos, target=target, targetname=targetname, radius=radius, playerteams=playerteams, playerclasses=playerclasses, spawnflags=spawnflags, kind=kind, done=[])
     except Done: pass
     return navcons
 
@@ -58,10 +59,12 @@ def main():
     for currentname in navcons:
         start = navcons[currentname]
         classnames = set()
+        for teamname in start['playerteams']:
+            if not teamname: continue
+            if teamname in teams: classnames = classnames.union(teams[teamname])
         for classname in start['playerclasses']:
             if not classname: continue
-            if classname in teams: classnames = classnames.union(teams[classname])
-            else: classnames.add(classname)
+            classnames.add(classname)
             if classname not in classnavcons: classnavcons[classname] = []
         if not classnames: classnames = knownclassnames
         if start['kind'] == 'start':
